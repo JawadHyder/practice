@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SymmetricBTree {
+public class SymmetricBTree_recursive_best {
     /**
      * Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
      * For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
@@ -47,36 +47,40 @@ public class SymmetricBTree {
 
         System.out.println(isSymmetric(N1));
 
+
+        // Symmetric tree
+        //[2,3,3,4,5,5,4,null,null,8,9,9,8]
+        BTNode B13 = new BTNode(8, null, null);
+        BTNode B12 = new BTNode(9, null, null);
+        BTNode B11 = new BTNode(9, null, null);
+        BTNode B10 = new BTNode(8, null, null);
+        BTNode B9 = null;
+        BTNode B8 = null;
+        BTNode B7 = new BTNode(4, null, null);
+        BTNode B6 = new BTNode(5, B12, B13);
+        BTNode B5 = new BTNode(5, B10, B11);
+        BTNode B4 = new BTNode(4, B8, B9);
+        BTNode B3 = new BTNode(3, B6, B7);
+        BTNode B2 = new BTNode(3, B4, B5);
+        BTNode B1 = new BTNode(2, B2, B3);
+        System.out.println(isSymmetric(B1));
+
     }
 
     private static boolean isSymmetric(BTNode root) {
-        if (root == null)
-            return true;
-        return isSymmetric_helper(Arrays.asList(root.left), Arrays.asList(root.right));
+        return isMirror(root, root);
     }
 
-    private static boolean isSymmetric_helper(List<BTNode> leftNodes, List<BTNode> rightNodes) {
-        if (leftNodes.size() != rightNodes.size())
-            return false;
-        List<BTNode> newLeftNodes = new ArrayList<>();
-        List<BTNode> newRightNodes = new ArrayList<>();
-        for (int i=0; i<leftNodes.size(); i++) {
-            BTNode left = leftNodes.get(i);
-            BTNode right = rightNodes.get(rightNodes.size()-1-i);
-            if (left == null && right == null)
-                continue;
-            if (left == null || right == null)
-                return false;
-            if (left.val != right.val)
-                return false;
-            newLeftNodes.add(left.left);
-            newLeftNodes.add(left.right);
-            newRightNodes.add(right.left);
-            newRightNodes.add(right.right);
-        }
-        if (Helper.listContainsAllNull(leftNodes) && Helper.listContainsAllNull(rightNodes))
+    // A tree is symmetric if the left subtree is a mirror reflection of the right subtree.
+    //Two trees are a mirror reflection of each other if:
+    //Their two roots have the same value.
+    //The right subtree of each tree is a mirror reflection of the left subtree of the other tree.
+    public static boolean isMirror(BTNode t1, BTNode t2) {
+        if (t1 == null && t2 == null)
             return true;
-        return isSymmetric_helper(newLeftNodes, newRightNodes);
+        if (t1 == null || t2 == null)
+            return false;
+        return t1.val == t2.val && isMirror(t1.left, t2.right) && isMirror(t1.right, t2.left);
     }
 
 }
