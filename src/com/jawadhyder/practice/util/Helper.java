@@ -28,4 +28,11 @@ public class Helper {
         }
         System.out.println("------------------------------");
     }
+
+    public static <T> void printLinkedList(ListNode<T> linkedListNode) {
+        while (linkedListNode != null) {
+            System.out.println(linkedListNode.val);
+            linkedListNode = linkedListNode.next;
+        }
+    }
 }
